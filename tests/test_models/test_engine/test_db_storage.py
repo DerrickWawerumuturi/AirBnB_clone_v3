@@ -14,9 +14,10 @@ from models.place import Place
 from models.review import Review
 from models.state import State
 from models.user import User
+from models import storage
 import json
 import os
-import pep8
+import pep8 # type: ignore
 import unittest
 DBStorage = db_storage.DBStorage
 classes = {"Amenity": Amenity, "City": City, "Place": Place,
@@ -67,6 +68,26 @@ test_db_storage.py'])
             self.assertTrue(len(func[1].__doc__) >= 1,
                             "{:s} method needs a docstring".format(func[0]))
 
+    def test_get(self):
+        """ Test if get method retrieves object"""
+        new_state = State(name="NewYork")
+        storage.new(new_state)
+        key = 'State.{}'.format(new_state.id)
+        result = storage.get("State", new_state.id)
+        self.assertTrue(result.id, new_state.id)
+        self.assertIsInstance(result, State)
+
+    def test_count(self):
+        """ Test if count method return expected number"""
+        storage.reload()
+        old_count = storage.count('State')
+        new_state1 = State(name="NewYork")
+        storage.new(new_state1)
+        new_state2 = State(name="Mombasa")
+        storage.new(new_state2)
+        new_state3 = State(name="Cape Town")
+        storage.new(new_state3)
+        self.assertEqual(old_count + 3, storage.count("State"))
 
 class TestFileStorage(unittest.TestCase):
     """Test the FileStorage class"""
