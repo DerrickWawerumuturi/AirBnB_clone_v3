@@ -25,4 +25,3 @@ if __name__ == '__main__':
     else:
         HBNB_MYSQL_PORT = getenv('HBNB_MYSQL_PORT')
     app.run(host=HBNB_MYSQL_HOST,port=HBNB_MYSQL_PORT, threaded=True)
-    
