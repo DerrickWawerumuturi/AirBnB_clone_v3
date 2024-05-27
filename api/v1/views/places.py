@@ -55,7 +55,7 @@ def delete_place_obj(place_id):
 @app_views.route('/cities/<city_id>/places',
                  methods=['POST'], strict_slashes=False)
 def create_new_place(city_id):
-    """creates a Place object"""
+    """creates a new Place object"""
 
     response = storage.get(City, city_id)
 
