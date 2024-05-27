@@ -10,7 +10,7 @@ from os import getenv
 
 app = Flask(__name__)
 app.register_blueprint(app_views)
-
+app.url_map.strict_slashes = False
 
 @app.teardown_appcontext
 def call(self):
@@ -21,7 +21,8 @@ def call(self):
 @app.errorhandler(404)
 def error(error):
     """ handles 404 error and gives a json response"""
-    return make_response(jsonify({'error': "Not found"}), 404)
+    print(error)
+    return make_response(jsonify({'error': 'Not found'}), 404)
 
 
 if __name__ == '__main__':
