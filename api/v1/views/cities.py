@@ -16,7 +16,7 @@ def city_by_state(state_id):
     """
     city_list = []
     state_obj = storage.get("State", state_id)
-    for obj in states_obj.values():
+    for obj in state_obj.values():
         city_list.append(obj.to_json())
 
     return jsonify(city_list)
