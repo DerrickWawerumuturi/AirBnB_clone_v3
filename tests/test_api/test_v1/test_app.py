@@ -1,10 +1,10 @@
 import os
-
 import flask.testing
 from api.v1.app import app
 from api.v1.views import *
 import unittest
 import flask
+
 
 class Test_AppCase(unittest.TestCase):
     """ test app.py"""
@@ -15,7 +15,5 @@ class Test_AppCase(unittest.TestCase):
             self.assertIsInstance(c, flask.testing.FlaskClient)
 
 
-
 if __name__ == '__main__':
     unittest.main()
-    

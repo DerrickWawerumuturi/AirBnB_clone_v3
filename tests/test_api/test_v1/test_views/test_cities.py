@@ -29,11 +29,12 @@ class TestCities(unittest.TestCase):
             new_state = State(name="Beckystan")
             storage.new(new_state)
             storage.save()
-            resp = c.post('/api/v1/states/{}/cities'.format(new_state.id),
-                        data=json.dumps({"name": "Chentown"}),
-                        content_type='application/json')
+            resp = c.post(
+                '/api/v1/states/{}/cities'.format(new_state.id),
+                data=json.dumps({"name": "Chentown"}),
+                content_type='application/json'
+            )
             self.assertEqual(resp.status_code, 201)
-
 
     def test_delete_city(self):
         '''test city DELETE route'''
