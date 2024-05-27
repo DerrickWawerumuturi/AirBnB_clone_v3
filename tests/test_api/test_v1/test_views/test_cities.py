@@ -46,7 +46,7 @@ class TestCities(unittest.TestCase):
             storage.new(new_city)
             storage.save()
             resp = c.delete('/api/v1/cities/{}'.format(new_city.id))
-            self.assertEqual(resp.status_code, 404)
+            self.assertEqual(resp.status_code, 200)
             resp2 = c.get('/api/v1/cities/{}'.format(new_city.id))
             self.assertEqual(resp2.status_code, 404)
 
