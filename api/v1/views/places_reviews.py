@@ -16,15 +16,15 @@ def getreview(review):
 def putreview(review):
     """ update object"""
     if not request.get_json():
-        abort(400,"Not a JSON")
+        abort(400, "Not a JSON")
     new = request.get_json()
     for (k, v) in new.items():
         if k != 'id' and \
-            k != 'created_at'and \
-            k != 'updated_at' and \
-            k != 'user_id' and \
-            k != 'place_id':
-                setattr(review, k, v)
+                k != 'created_at' and \
+                k != 'updated_at' and \
+                k != 'user_id' and \
+                k != 'place_id':
+            setattr(review, k, v)
     storage.save()
     return (review.to_dict(), 200)
 
@@ -65,7 +65,7 @@ def review(place_id):
         if user_id not in y:
             abort(404)
         if 'text' not in new.keys():
-            return ({"error":"Missing text"}, 400)
+            return ({"error": "Missing text"}, 400)
         for (k, v) in new.items():
             setattr(x, k, v)
         setattr(x, 'place_id', place_id)

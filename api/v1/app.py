@@ -9,7 +9,6 @@ from os import getenv
 from flask_cors import CORS
 
 app = Flask(__name__)
-app.register_blueprint(app_views)
 app.url_map.strict_slashes = False
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 app.register_blueprint(app_views)
@@ -25,7 +24,6 @@ def call(self):
 @app.errorhandler(404)
 def error(error):
     """ handles 404 error and gives a json response"""
-    print(error)
     return make_response(jsonify({'error': 'Not found'}), 404)
 
 
