@@ -1,21 +1,23 @@
 #!/usr/bin/python3
 """
-Creates a new view for User objects for all default API actions
+Creates a new view for objects for all default API actions
 """
 from flask import Flask, request, jsonify, abort
 from api.v1.views import app_views
 from models import storage
 from models.review import Review
+from models.place import Place
+from models.user import User
 
 
 def getreview(review):
-    """ turns review to object"""
+    """Get object"""
     return (review.to_dict(), 200)
 
 
 def putreview(review):
-    """ update object"""
-    if not request.get_json():
+    """Update object"""
+    if not request.is_json:
         abort(400, "Not a JSON")
     new = request.get_json()
     for (k, v) in new.items():
@@ -29,17 +31,16 @@ def putreview(review):
     return (review.to_dict(), 200)
 
 
-def delreview(review):
-    """ deletes a specific review"""
+def deletereview(review):
+    """Delete object"""
     storage.delete(review)
     storage.save()
     return ({}, 200)
 
 
-@app_views.route("places/<place_id>/reviews", methods=['GET', 'POST'])
-def review(place_id):
-    """ retrieves list of all Review object of a place
-    or create an new object"""
+@app_views.route('/places/<place_id>/reviews', methods=['GET', 'POST'])
+def reviews(place_id):
+    """Retrieves list of all objects"""
     place = None
     for c in storage.all('Place').values():
         if c.id == place_id:
@@ -59,13 +60,14 @@ def review(place_id):
         if 'name' not in new.keys():
             return ({"error": "Missing name"}, 400)
         if 'user_id' not in new.keys():
-            return ({"error": "Missing user_id"}, 404)
+            return ({"error": "Missing user_id"}, 400)
         user_id = new['user_id']
         y = [x.id for x in storage.all('User').values()]
         if user_id not in y:
             abort(404)
         if 'text' not in new.keys():
             return ({"error": "Missing text"}, 400)
+        x = Review()
         for (k, v) in new.items():
             setattr(x, k, v)
         setattr(x, 'place_id', place_id)
@@ -73,16 +75,16 @@ def review(place_id):
         return (x.to_dict(), 201)
 
 
-@app_views.route("reviews/<review_id>", methods=['GET', 'PUT', 'DELETE'])
+@app_views.route('/reviews/<ident>', methods=['GET', 'PUT', 'DELETE'])
 def reviews_id(ident):
-    """ update or delete an object"""
-    reviews = storage.all('Reviews').values()
-    for p in review:
+    """Retrieves a specific object"""
+    reviews = storage.all("Review").values()
+    for p in reviews:
         if p.id == ident:
             if request.method == 'GET':
                 return getreview(p)
             elif request.method == 'PUT':
                 return putreview(p)
             elif request.method == 'DELETE':
-                return delreview(p)
+                return deletereview(p)
     abort(404, 'Not found')
