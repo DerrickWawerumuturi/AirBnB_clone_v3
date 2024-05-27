@@ -19,8 +19,8 @@ def putuser(user):
         abort(400, "Not a JSON")
     new = request.get_json()
     for (k, v) in new.items():
-        if k is not 'id' and k is not 'email'\
-           and k is not 'created_at' and k is not 'updated_at':
+        if k != 'id' and k != 'email'\
+           and k != 'created_at' and k != 'updated_at':
             setattr(user, k, v)
     storage.save()
     return (user.to_dict(), 200)
